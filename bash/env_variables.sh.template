@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export expense_accounts=( "Power Bill" "Mortgage" )
+export expense_budgets=( "155.00" "1852.00" )
