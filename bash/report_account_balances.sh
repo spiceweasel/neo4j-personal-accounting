@@ -44,6 +44,9 @@ year=$1
 month_num=$2
 month=$(month_to_number "${month}")
 
+echo -- START -- 
 echo "MATCH (y:FinancialYear {name:'${year}'})-[]->(m:FinancialMonth {name:'${month}'})-[]->(accts:FinancialAccount {name:'${account}'})"
 
 echo "(debit:AccountDebit {date: date('${year}-${month_num}-${day}'), amount:${amount}, notes:'${notes}'})<-[rel:ENTRY]-(acct) RETURN acct, rel, debit;"
+echo -- END --
+echo
