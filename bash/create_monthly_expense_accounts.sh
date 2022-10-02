@@ -41,7 +41,7 @@ echo "match (fy:FinancialYear {name:\"$year\"})-[lp:PERIOD]->(fm:FinancialMonth 
 for (( i=0; i<$account_len; i++));
 do
 	echo "create (fm)-[la${i}:ACCOUNT]->(fa${i}:FinancialAccount {name:\"${expense_accounts[i]}\", budget_amount:${expense_budgets[i]}, type:\"expense\"}),"
-	echo "(fa${i})-[le${i}:ENTRY]->(fe${i}:AccountDebit {date: date({year:${year} , month: ${month_num} , day: 1, notes:\"${debit_note}\"}), amount:${expense_budgets[i]}})"
+	echo "(fa${i})-[le${i}:ENTRY]->(fe${i}:AccountDebit {date: date({year:${year} , month: ${month_num} , day: 1}), notes:\"${debit_note}\", amount:${expense_budgets[i]}})"
 	return_elements+=( "la${i}" ) 
 	return_elements+=( "fa${i}" )
 	return_elements+=( "le${i}" )

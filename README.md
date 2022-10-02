@@ -12,7 +12,7 @@ Additionally this project seeks to exercise different methods for interacting wi
 
 ## Current State
 - 2022-10-02
-  - Bash scripts are created to manage year, month, and expense accounts.
+  - Bash scripts created to manage creation of year, month, and expense accounts nodes and relations.
 
 ## Future Plans
 - Create a web application using Svelte.js

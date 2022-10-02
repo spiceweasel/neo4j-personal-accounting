@@ -84,4 +84,19 @@ MATCH (y:FinancialYear {name:'2022'})-[]->(m:FinancialMonth {name:'September'})-
 
 
 ### Accounts with credits
+MATCH (y:FinancialYear {name:'2022'})-[]->(m:FinancialMonth {name:'September'})-[]->(acct:FinancialAccount)
+CALL {
+    WITH acct 
+    MATCH (acct)-[]->(d:AccountDebit) return sum(d.amount) as Debits, acct.name as Name
+}
+WITH Name, Debits, acct
+CALL {
+    WITH acct 
+    MATCH (acct)-[]->(d:AccountCredit) return sum(d.amount) as Credits
 
+}
+WITH Debits - Credits as balance, acct
+MATCH (y2:FinancialYear {name:'2022'})-[]->(m2:FinancialMonth {name:'October'})-[]->(acct2:FinancialAccount {name:acct.name})
+WITH balance, acct, y2, m2, acct2
+CREATE (acct)-[:ENTRY]->(bfp:AccountCredit {amount:balance, date:date({year:2022, month:10, day:1}), notes:"Month ending balance to forward"})-[:TRANSFER { month_ending:true }]->(bfr:AccountDebit {date:date({year:2022, month:10, day:1}), amount:balance, notes:"Balance forwarded"})<-[:ENTRY]-(acct2)
+RETURN acct, bfp, bfr, acct2, y2, m2
