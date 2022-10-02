@@ -6,7 +6,7 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ] || [ -z "$5" ]; then
 	exit
 fi
 
-function month_to_number()
+function number_to_month()
 {
     local month_str=$1
     
@@ -47,10 +47,15 @@ account=$4
 amount=$5
 notes=$6 || ""
 
-month=$(month_to_number "${month}")
+month=$(number_to_month "${month_num}")
 
-echo -- START -- 
+if [[ "unknown_month" == "${month}" ]]; then
+    echo "Error: ${month} is an invalid number for a month.  Please use only numbers 1 through 12 without leading zeros."
+    exit
+fi
+
+echo -- START --
 echo "MATCH (y:FinancialYear {name:'${year}'})-[]->(m:FinancialMonth {name:'${month}'})-[]->(acct:FinancialAccount {name:'${account}'})"
 echo "CREATE (debit:AccountDebit {date: date('${year}-${month_num}-${day}'), amount:${amount}, notes:'${notes}'})<-[rel:ENTRY]-(acct) RETURN acct, rel, debit;"
-echo -- END -- 
+echo -- END --
 echo

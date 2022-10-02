@@ -47,7 +47,12 @@ account=$4
 amount=$5
 notes=$6 || ""
 
-month=$(number_to_month "${month}")
+month=$(number_to_month "${month_num}")
+
+if [[ "unknown_month" == "${month}" ]]; then
+    echo "Error: ${month} is an invalid number for a month.  Please use only numbers 1 through 12 without leading zeros."
+    exit
+fi
 
 echo -- START --
 echo "MATCH (y:FinancialYear {name:'${year}'})-[]->(m:FinancialMonth {name:'${month}'})-[]->(acct:FinancialAccount {name:'${account}'})"
