@@ -9,7 +9,6 @@ Additionally this project seeks to exercise different methods of interacting wit
   - Creating reports.
 - Create a one or more web applications (using popular frameworks) that implement a Graphical User Interface (GUI) to Create, Read, Update, or Delete (CRUD) the financial data stored in our graph database.
 
-
 ## Current State
 - 2022-10-02
   - Bash scripts created to:
