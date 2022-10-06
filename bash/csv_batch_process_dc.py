@@ -5,9 +5,9 @@ import os
 print('Number of arguments:', len(sys.argv), 'arguments.')
 print('Argument List:', str(sys.argv))
 
-DATE_INDEX = 1
-DESC_INDEX = 2
-AMT_INDEX = 3
+DATE_INDEX = 0
+DESC_INDEX = 3
+AMT_INDEX = 1
 CAT_INDEX = 4
 ACCT_INDEX = 5
 
@@ -33,10 +33,12 @@ with open(sys.argv[1], mode='r') as file:
             break
         entry_month = int(row_date[0])
         entry_day = int(row_date[1])
-        entry_year = int(row_date[2])
+        entry_year = int(row_date[2]) if len(row_date[2]) == 4 else int("20" + row_date[2])
 
-        entry_desc = row[DESC_INDEX].replace("'", " ") or ''
-        entry_subcat = row[CAT_INDEX] or 'none'
+        if entry_year < 2019: print("Error parsing date row_date[2]", row[DATE_INDEX])
+
+        entry_desc = row[DESC_INDEX].replace("'", " ").strip() or ''
+        entry_subcat = row[CAT_INDEX].strip() or 'none'
 
         entry_account = row[ACCT_INDEX] or 'Misc Spending'
                 
@@ -46,7 +48,10 @@ with open(sys.argv[1], mode='r') as file:
             print("Row: ", loop_index)
             print("!!! Error parsing amount. \n Exiting.")
             break
-        os.system('./credit_financial_account.sh {} {} {} "{}" {} "{}" "{}"'.format(entry_year, entry_month, entry_day, entry_account, entry_amount, entry_subcat, entry_desc))
+        if (entry_amount < 0.0):
+            os.system('./credit_financial_account.sh {} {} {} "{}" {} "{}" "{}"'.format(entry_year, entry_month, entry_day, entry_account, abs(entry_amount), entry_subcat, entry_desc))
+        else:
+            os.system('./debit_financial_account.sh {} {} {} "{}" {} "{}" "{}"'.format(entry_year, entry_month, entry_day, entry_account, entry_amount, entry_subcat, entry_desc))
         print("")
 
 print("\n\nDone")

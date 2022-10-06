@@ -100,3 +100,17 @@ MATCH (y2:FinancialYear {name:'2022'})-[]->(m2:FinancialMonth {name:'October'})-
 WITH balance, acct, y2, m2, acct2
 CREATE (acct)-[:ENTRY]->(bfp:AccountCredit {amount:balance, date:date({year:2022, month:10, day:1}), notes:"Month ending balance to forward"})-[:TRANSFER { month_ending:true }]->(bfr:AccountDebit {date:date({year:2022, month:10, day:1}), amount:balance, notes:"Balance forwarded"})<-[:ENTRY]-(acct2)
 RETURN acct, bfp, bfr, acct2, y2, m2
+
+### Monthly Account Credits & Debits
+match (fy:FinancialYear {name:'2022'})-[]->(fm:FinancialMonth) with fy, fm 
+CALL {
+    with fm
+    match (fm)-[]->(acct:FinancialAccount {name:'Water Bill'})-[:ENTRY]->(cred:AccountCredit) return sum(cred.amount) as Credits
+}
+with fy, fm, Credits
+CALL {
+    WITH fm
+    match (fm)-[]->(acct:FinancialAccount {name:'Water Bill'})-[:ENTRY]->(debt:AccountDebit) return sum(debt.amount) as Debits, fm.name as Month
+}
+with fy, fm, Credits, Debits, Month
+return Month, Credits, Debits
