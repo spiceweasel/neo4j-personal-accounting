@@ -56,5 +56,6 @@ if [[ "unknown_month" == "${month}" ]]; then
 fi
 
 
-echo "MATCH (y:FinancialYear {name:'${year}'})-[]->(m:FinancialMonth {number:${month_num}})-[]->(acct:FinancialAccount {name:'${account}'})"
-echo "CREATE (cred:AccountCredit {date: date('${year}-${month_num}-${day}'), amount:${amount}, subCategory: '${sub_category}', notes:'${notes}'})<-[rel:ENTRY]-(acct) RETURN acct, rel, cred;"
+echo "MATCH (y:FinancialYear {name:'${year}'})-[:PERIOD]->(m:FinancialMonth {number:${month_num}})"
+echo "WITH y, m MERGE (m)-[:ACCOUNT]->(acct:FinancialAccount {name:'${account}'}) WITH y,m,acct"
+echo "MERGE (cred:AccountCredit {date: date('${year}-${month_num}-${day}'), amount:${amount}, subCategory: '${sub_category}', notes:'${notes}'})<-[rel:ENTRY]-(acct) RETURN acct, rel, cred;"

@@ -2,7 +2,7 @@
 
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ] || [ -z "$5" ]; then
 	echo "Missing parameters:"
-	echo "Usage: command <year> <month_num [1-12]> <day_num [1-31]> <account_name> <amount> [<notes>]" 
+	echo "Usage: command <year> <month_num [1-12]> <day_num [1-31]> <account_name> <amount>  <sub-category> [<notes>]" 
 	exit
 fi
 
@@ -45,7 +45,8 @@ month_num=$2
 day=$3
 account=$4
 amount=$5
-notes=$6 || ""
+sub_category=$6 || "none"
+notes=$7 || ""
 
 month=$(number_to_month "${month_num}")
 
@@ -54,8 +55,6 @@ if [[ "unknown_month" == "${month}" ]]; then
     exit
 fi
 
-echo -- START --
-echo "MATCH (y:FinancialYear {name:'${year}'})-[]->(m:FinancialMonth {name:'${month}'})-[]->(acct:FinancialAccount {name:'${account}'})"
-echo "CREATE (debit:AccountDebit {date: date('${year}-${month_num}-${day}'), amount:${amount}, notes:'${notes}'})<-[rel:ENTRY]-(acct) RETURN acct, rel, debit;"
-echo -- END --
-echo
+echo "MATCH (y:FinancialYear {name:'${year}'})-[:PERIOD]->(m:FinancialMonth {number:${month_num}})"
+echo "WITH y, m MERGE (m)-[:ACCOUNT]->(acct:FinancialAccount {name:'${account}'}) WITH y,m,acct"
+echo "MERGE (debit:AccountDebit {date: date('${year}-${month_num}-${day}'), amount:${amount}, subCategory: '${sub_category}', notes:'${notes}'})<-[rel:ENTRY]-(acct) RETURN acct, rel, debit;"
