@@ -44,7 +44,7 @@ return_elements=()
 echo -- START --
 for (( i=0; i<$account_len; i++));
 do
-	echo "create (fa${i}:FinancialAccount {name:\"${financial_account_names[i]}\", period:\"${financial_account_periods[i]}\", number:\"${financial_account_numbers[i]}\", type:\"${financial_account_types[i]}\", budget_amount:${financial_account_budgets[i]}, description:\"\", isActive:true})"
+	echo "CREATE (fa${i}:FinancialAccount {name:\"${financial_account_names[i]}\", periodicity:\"${financial_account_periods[i]}\", number:\"${financial_account_numbers[i]}\", type:\"${financial_account_types[i]}\", budget_amount:${financial_account_budgets[i]}, description:\"\", isActive:true})"
 	return_elements+=( "fa${i}" )
 done
 echo

@@ -2,8 +2,10 @@
 
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
 	echo "Missing parameters:"
-	echo "Usage: command <year name> <periodicity type> <period number>"
-	echo "Period number shoudld be in the range of [1-12] for monthly or [1-4] for quarterly."
+	echo "Usage: command <year_name> <periodicity_type> <period_number>"
+	echo "- year_name - is a string matching the name given to the financial year we want to create ledgers in e.g. '2022-23'"
+	echo "- periodicity_type - one of [year|month|quarter]"
+	echo "- period_number - A value indicating the period. Number shoud be in the range of [1-12] for monthly or [1-4] for quarterly, etc."
 	exit
 fi
 

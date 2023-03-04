@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
-	echo "Please supply name for your financial year e.g. '2022 or 2022-01-01 2022-12-23'"
+	echo "Please supply a name for your financial year e.g. '2022 or 2022-01-01 2022-12-23'"
 	echo "<Financial year name e.g. 2021-22>  <start_date Ymd> <end_date Ymd>"
 	exit
 fi
@@ -75,7 +75,7 @@ function print_quarterly_financial_periods()
 }
 
 echo -- START --
-echo "create (fy:FinancialYear {name:\""$year"\", start_date:date(\""$start_date"\"), end_date:date(\""$end_date"\")})"
+echo "CREATE (fy:FinancialYear {name:\""$year"\", start_date:date(\""$start_date"\"), end_date:date(\""$end_date"\")})"
 
 print_yearly_financial_periods
 print_monthly_financial_periods
