@@ -13,6 +13,7 @@ Additionally this project seeks to exercise different methods of interacting wit
 - 2023-03-04
   - Changed schema for all nodes to better accomodate scripted queries and provide a single point of reference for data.
   - Can now create financial year, create financial accounts, and open financial ledgers for a given period with the updated schema.
+  - Updated credit and debit scripts to match new schema.
 - 2022-10-02
   - Bash scripts created to:
     - Manage creation of year, month, and expense accounts nodes and relations.
